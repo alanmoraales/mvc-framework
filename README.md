@@ -15,7 +15,7 @@
 
 - Your favorite IDE, for this tutorial I'm going to use VSCode
 
-### Installation
+  
 
 **Step 1.** [Download the jar file](https://github.com/alanmoraales/mvc-framework/releases/tag/0.1) of this library.
 
@@ -233,93 +233,124 @@ None.
 ![class-diagram](https://raw.githubusercontent.com/alanmoraales/mvc-framework/9151c4a9dcf73a383c55243ae881afa2518b1ae5/docs/class_diagram_framework.svg)
 
 ### Model
-class description
+Stores data and provide a way to get updated data and to update the data.
 
 #### Dependencies
+
+This class has no dependencies.
 
 #### Attributes
 | name | type | visibility | default value | description |
 |------|-----------| ---- | ---- | ---- |
-|attributeName| type | public | "hello" | hello world |
+|data| Object | private | null | the data that you want to store in the model |
+|observers| ModelObserver[] | private | empty array | a list of observers that can know when the data is updated (ends up being the view classes) |
 
 #### Functions
 | name | arguments | return value | visibility | service | description |
 |------|-----------| --- | ---- | ---- | ---- |
-|functionName| argumentName: type | type | public | hello world | jajajajajajajajajajjaajaja |
+|setData| data: Object | void | public | update model data | let user change the stored data |
+|getData| none | Object | public | get updated data | let user get the data |
+|sendUpdateNotification| none | void | private | get updated data | send notification to the views when the data is updated |
 
-### ClassName
-class description
+### Controller
+Provide functionality to let user update the data in the model
 
 #### Dependencies
+
+This class has no dependencies
 
 #### Attributes
 | name | type | visibility | default value | description |
 |------|-----------| ---- | ---- | ---- |
-|attributeName| type | public | "hello" | hello world |
+|model| Model | private | the model you provide in the configuration | the model provide in the configuration |
 
 #### Functions
 | name | arguments | return value | visibility | service | description |
 |------|-----------| --- | ---- | ---- | ---- |
-|functionName| argumentName: type | type | public | hello world | jajajajajajajajajajjaajaja |
+| setModel | model: Model | void | public | update model | let user change the model object |
+|updateData| data: Object | void | public | update model | let user change the model data |
 
-### ClassName
-class description
+### ModelObserver
+An interface that let classes listen for changes in the data of its model
 
 #### Dependencies
+
+This class has no dependencies
+
+#### Attributes
+
+Since this is an interface, it has no attributes.
+
+#### Functions
+| name | arguments | return value | visibility | service | description |
+|------|-----------| --- | ---- | ---- | ---- |
+|onUpdateData| none | void | public | get updated data | runs everytime the data in the model changes |
+
+### Logger
+Reads logger configuration and provides functionality to log messages.
+
+#### Dependencies
+
+This class has no dependencies
 
 #### Attributes
 | name | type | visibility | default value | description |
 |------|-----------| ---- | ---- | ---- |
-|attributeName| type | public | "hello" | hello world |
+|activated| boolean | private | true | stores if the logger is activated or not. |
+|instance| Logger | private | null | the logger instance, the logger is a singleton to avoid problems when having multiples views running at the same time. |
 
 #### Functions
 | name | arguments | return value | visibility | service | description |
 |------|-----------| --- | ---- | ---- | ---- |
-|functionName| argumentName: type | type | public | hello world | jajajajajajajajajajjaajaja |
+|log| message: string | void | public | log messages | the message you send will be log in the log files and in the console |
+|getIntance| none | Logger | public | log messages | returns the instance of the logger |
 
-### ClassName
-class description
+### ConfigLoader
+Loads the view configuration, creates instances for the controller and model.
 
 #### Dependencies
+
+Has a dependency with the logger, messages are logged when running the load process.
+
+#### Attributes
+
+Has no attributes
+
+#### Functions
+| name | arguments | return value | visibility | service | description |
+|------|-----------| --- | ---- | ---- | ---- |
+|loadConfiguration| view: View | void | public | load configuration | Takes a view and load its corresponding configuration from the properties file. |
+
+### View
+Can update the data in the model and be notified when the data in the model changes.
+
+#### Dependencies
+
+Has dependencies with:
+
+- Controller: let view update the data in the model.
+- Model: let view know when the data is updated and let view get updated data.
+- ConfigLoader: loads the view configuration, set the model and controller classes.
+- ModelObserver: inherit the onUpdateData function that runs everytime the data in the model is updated.
 
 #### Attributes
 | name | type | visibility | default value | description |
 |------|-----------| ---- | ---- | ---- |
-|attributeName| type | public | "hello" | hello world |
+|controller| Controller | private | the class in the configuration | let view updated the data in the model |
+|model| Model | private | the class in the configuration | let view get the data in the model |
 
 #### Functions
 | name | arguments | return value | visibility | service | description |
 |------|-----------| --- | ---- | ---- | ---- |
-|functionName| argumentName: type | type | public | hello world | jajajajajajajajajajjaajaja |
-
-### ClassName
-class description
-
-#### Dependencies
-
-#### Attributes
-| name | type | visibility | default value | description |
-|------|-----------| ---- | ---- | ---- |
-|attributeName| type | public | "hello" | hello world |
-
-#### Functions
-| name | arguments | return value | visibility | service | description |
-|------|-----------| --- | ---- | ---- | ---- |
-|functionName| argumentName: type | type | public | hello world | jajajajajajajajajajjaajaja |
-
-### ClassName
-class description
-
-#### Dependencies
-
-#### Attributes
-| name | type | visibility | default value | description |
-|------|-----------| ---- | ---- | ---- |
-|attributeName| type | public | "hello" | hello world |
-
-#### Functions
-| name | arguments | return value | visibility | service | description |
-|------|-----------| --- | ---- | ---- | ---- |
-|functionName| argumentName: type | type | public | hello world | jajajajajajajajajajjaajaja |
+| setController | controller: Controller | void | publcic | load configuration | the load config uses it to set the controller instance |
+|setModel| model: Model | void | public | load configuration | the load config uses it to set the model instance |
 
 ## Sequence
+
+#### How the framework loads configuration
+
+![creating-instance](https://raw.githubusercontent.com/alanmoraales/mvc-framework/a702be86eaae875ba1e2f7e16eccc1143d18fea5/docs/creating_instances.svg)
+
+#### How the flow works for the end user (hello world example)
+
+![hello-world](https://raw.githubusercontent.com/alanmoraales/mvc-framework/a702be86eaae875ba1e2f7e16eccc1143d18fea5/docs/hello world.svg)
