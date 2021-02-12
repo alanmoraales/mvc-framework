@@ -356,4 +356,4 @@ Has dependencies with:
 
 #### How the flow works for the end user (hello world example)
 
-![hello-world](https://raw.githubusercontent.com/alanmoraales/mvc-framework/a702be86eaae875ba1e2f7e16eccc1143d18fea5/docs/hello world.svg)
+![hello-world](https://raw.githubusercontent.com/alanmoraales/mvc-framework/a702be86eaae875ba1e2f7e16eccc1143d18fea5/docs/hello%20world.svg)
