@@ -133,8 +133,11 @@ public class Main {
 }
 ````
 
+To run the project just go to the main class and click run in the main method.
+
 ## The logger
-The logger functionality works without any configuration, but you are still able to deactivated or to chanche the max file size of the generated files. To do it, you just need to created a `log.properties` files in the root directory.
+
+The logger functionality works without any configuration, but you are still able to deactivated or to change the max file size of the generated files. To do it, you just need to created a `log.properties` files in the root directory.
 
 ````
 activated=true
